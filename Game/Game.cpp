@@ -3,57 +3,68 @@
 #include "Renderer.h"
 
 #include <iostream>
+#include <vector>
 using namespace std;
+using namespace nu;
+
 
 int main() {
-    nu::Renderer render;
+    //Intialization
+    Renderer render;
     const int windowWidth = 1920;
     const int windowHeight = 1024;
 
     render.Initialize("Game Engine", windowWidth, windowHeight);
+	Vector2 vel{ 0.5f, 0.0f};
+    vector<Vector2> v;
+ 
 
-    // handle events
-    SDL_Event e;
+    for (int i = 0; i < 300; i++) {
+      
+		v.push_back(Vector2{ RandomFloat(windowWidth), RandomFloat(windowHeight) });
+       
+	}
+
+   
+	//MAIN LOOP
     bool quit = false;
-
-    // Define a rectangle
-    //SDL_FRect greenSquare{ 270, 190, 200, 200 };
-
     while (!quit) {
-        while (SDL_PollEvent(&e)) {
-            if (e.type == SDL_EVENT_QUIT) {
+		//Update
+        SDL_Event event;
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_EVENT_QUIT) {
                 quit = true;
             }
         }
-
+        //Render
         render.SetColor(0, 0, 0, 0);
         render.Clear();
-
-        //render.SetColor(270, 190, 200, 200);
-        //render.DrawFillRect(255, 255, 255, 255);
-
        
-
-        for (int i = 0; i < 12; i++) {
+       
+        // Random lines
+       /* for (int i = 0; i < 12; i++) {
             float x1 = rand() % windowWidth;
             float y1 = rand() % windowHeight;
             float x2 = rand() % windowWidth;
             float y2 = rand() % windowHeight;
 
-            render.SetColor(rand() % 255, rand() % 255, rand() % 255, rand() % 255);
+            render.SetColor((float)(RandomInt(256)), (float)(RandomInt(256)), (float)(RandomInt(256)), (float)(RandomInt(256)));
             render.DrawLine(x1, y1, x2, y2);
-        }
-               
-        for (int i = 0; i < 20; i++) {
+        }*/
+        
+		//Random points
+        for (int i = 0; i < v.size(); i++) {
             float x = rand() % windowWidth;
             float y = rand() % windowHeight;
 
 
             render.SetColor(rand() % 255, rand() % 255, rand() % 255, rand() % 255);
-            render.DrawPoint(x, y);
+            v[i] = v[i] + vel;
+            render.DrawPoint(v[i].x, v[i].y);
         }
 
-        for (int i = 0; i < 5; i++) {
+		//Random rectangles
+       /* for (int i = 0; i < 5; i++) {
             float x = rand() % windowWidth;
             float y = rand() % windowHeight;
 			float w = rand() % 200 + 50;
@@ -62,7 +73,7 @@ int main() {
 
             render.SetColor(rand() % 255, rand() % 255, rand() % 255, rand() % 255);
             render.DrawRect(x, y, w, h);
-        }
+        }*/
 
 
         render.Present();
