@@ -1,6 +1,7 @@
 #include "Engine.h"
 #include "SDL3/SDL.h"
 #include "Renderer.h"
+#include "input.h"
 
 #include <iostream>
 #include <vector>
@@ -15,6 +16,9 @@ int main() {
     const int windowHeight = 1024;
 
     render.Initialize("Game Engine", windowWidth, windowHeight);
+    Input input;
+	input.Initialize();
+
 	Vector2 vel{ 0.5f, 0.0f};
     vector<Vector2> v;
  
@@ -26,6 +30,7 @@ int main() {
 	}
 
    
+   
 	//MAIN LOOP
     bool quit = false;
     while (!quit) {
@@ -35,14 +40,27 @@ int main() {
             if (event.type == SDL_EVENT_QUIT) {
                 quit = true;
             }
+
+            if (event.type == SDL_EVENT_KEY_DOWN && event.key.scancode == SDL_SCANCODE_ESCAPE) {
+                    quit = true;
+                
+			}
         }
+		input.Update();
+
+        
+
+
+        Vector2 mousePos;
+		SDL_GetMouseState(&mousePos.x, &mousePos.y);
+
         //Render
         render.SetColor(0, 0, 0, 0);
         render.Clear();
        
        
-        // Random lines
-       /* for (int i = 0; i < 12; i++) {
+       // Random lines
+       /*for (int i = 0; i < 12; i++) {
             float x1 = rand() % windowWidth;
             float y1 = rand() % windowHeight;
             float x2 = rand() % windowWidth;
@@ -51,9 +69,12 @@ int main() {
             render.SetColor((float)(RandomInt(256)), (float)(RandomInt(256)), (float)(RandomInt(256)), (float)(RandomInt(256)));
             render.DrawLine(x1, y1, x2, y2);
         }*/
-        
+
+		render.SetColor(1.0f, 1.0f, 1.0f);
+		render.DrawFillRect(input.GetMousePosition().x -20 , input.GetMousePosition().y - 20, 40, 40);
+
 		//Random points
-        for (int i = 0; i < v.size(); i++) {
+       /* for (int i = 0; i < v.size(); i++) {
             float x = rand() % windowWidth;
             float y = rand() % windowHeight;
 
@@ -61,7 +82,7 @@ int main() {
             render.SetColor(rand() % 255, rand() % 255, rand() % 255, rand() % 255);
             v[i] = v[i] + vel;
             render.DrawPoint(v[i].x, v[i].y);
-        }
+        }*/
 
 		//Random rectangles
        /* for (int i = 0; i < 5; i++) {
