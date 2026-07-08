@@ -1,9 +1,8 @@
 #include "Engine.h"
 #include "SDL3/SDL.h"
-
-
 #include <iostream>
 #include <vector>
+
 using namespace std;
 using namespace nu;
 
@@ -19,7 +18,7 @@ int main() {
 	input.Initialize();
 	Time time;
 
-    Vector2 position{ 640, 512 };
+    Vector2 position{};
 	float speed = 200.0f;
     vector<Vector2> points;
     
@@ -39,15 +38,23 @@ int main() {
 
             if (event.type == SDL_EVENT_KEY_DOWN && event.key.scancode == SDL_SCANCODE_ESCAPE) {
                     quit = true;
-                
 			}
         }
 		input.Update();
         time.Tick();
-		//cout << "Seconds: " << seconds << " Delta Time: " << dt << endl;
 
 
-        if (input.GetButtonPressed(Input::MouseButton::Left)) {
+        if (input.GetButtonDown(Input::MouseButton::Left)) {
+			position = input.GetMousePosition();
+            if (points.empty()) {
+                points.push_back(position);
+            }
+            float distance = (position - points.back()).Length();
+
+            if (distance > 10.0f) {
+                points.push_back(position);
+			}
+
 			points.push_back(input.GetMousePosition());
 		}
         Vector2 vel{ 0.0f, 0.0f };
@@ -66,23 +73,16 @@ int main() {
         render.SetColor(0.0f, 0.0f, 0.0f);
         render.Clear();
        
-       	
 
 		//Random points
-        for (int i = 0; i < points.size(); i++) {
-            float x = rand() % windowWidth;
-            float y = rand() % windowHeight;
-
+        for (int i = 0; i < (int)points.size() - 1; i++) {
 
             render.SetColor(RandomFloat(), RandomFloat(), RandomFloat(), RandomFloat());
-            //points[i] = points[i] + vel;
-            render.DrawPoint(points[i].x, points[i].y);
+            render.DrawLine(points[i].x, points[i].y, points[i+1].x, points[i+1].y);
         }
 
         render.SetColor(1.0f, 1.0f, 1.0f);
         render.DrawFillRect(position.x - 20, position.y - 20, 40, 40);
-
-
 
         render.Present();
     }
