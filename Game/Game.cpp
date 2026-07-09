@@ -6,6 +6,42 @@
 using namespace std;
 using namespace nu;
 
+struct Transform {
+    Vector2 position;
+    float scale;
+    float rotation;
+};
+class Actor {
+public:
+	Actor() = default;
+    Actor(const Transform& transform) : m_transform{ transform } {}
+
+    void Update(float dt) {
+        m_transform.position += (m_velocity * dt);
+		m_velocity *= 0.9997f; // Apply friction to slow down the actor over time
+
+        m_transform.position.x = nu::math::Wrap(0.0f, 1920.0f, m_transform.position.x);
+        m_transform.position.y = nu::math::Wrap(0.0f, 1024.0f, m_transform.position.y);
+    }
+
+    void Draw(const Renderer& render) const { 
+        render.SetColor(1.0f, 1.0f, 1.0f);
+        render.DrawFillRect(m_transform.position.x - (m_transform.scale * 0.5f), m_transform.position.y - (m_transform.scale * 0.5f), 40, 40);
+    }
+
+	const Transform& GetTransform() const{ return m_transform; }
+	void SetPosition(const Vector2& position) { m_transform.position = position; }
+	void SetRotation(float rotation) { m_transform.rotation = rotation; }
+	void SetScale(float scale) { m_transform.scale = scale; }
+
+	const Vector2& GetVelocity() const { return m_velocity; }
+	void SetVelocity(const Vector2& velocity) { m_velocity = velocity; }
+
+protected:
+	Transform m_transform;
+    Vector2 m_velocity{0, 0};
+
+};
 
 int main() {
     //Intialization
@@ -17,8 +53,10 @@ int main() {
     Input input;
 	input.Initialize();
 	Time time;
+    Actor player{ Transform {Vector2{640.0f, 512.0f}, 0, 50.0f} };
 
-    Vector2 position{};
+    Vector2 position{640.0f, 512.0f};
+    Vector2 vel{ 0.0f, 0.0f };
 	float speed = 200.0f;
     vector<Vector2> points;
     
@@ -45,25 +83,37 @@ int main() {
 
 
         if (input.GetButtonDown(Input::MouseButton::Left)) {
-			position = input.GetMousePosition();
+			Vector2 v = input.GetMousePosition();
             if (points.empty()) {
-                points.push_back(position);
+                points.push_back(v);
             }
-            float distance = (position - points.back()).Length();
+            float distance = (v - points.back()).Length();
 
             if (distance > 10.0f) {
-                points.push_back(position);
+                points.push_back(v);
 			}
 
 			points.push_back(input.GetMousePosition());
 		}
-        Vector2 vel{ 0.0f, 0.0f };
-        if (input.GetKeyDown(SDL_SCANCODE_A)) {vel.x = -speed;}
-        if (input.GetKeyDown(SDL_SCANCODE_D)) {vel.x = +speed;}
-        if (input.GetKeyDown(SDL_SCANCODE_W)) {vel.y = -speed;}
-        if (input.GetKeyDown(SDL_SCANCODE_S)) {vel.y = +speed;}
 
+        if (input.GetButtonPressed(Input::MouseButton::Right)) {
+            if (!points.empty())points.pop_back();
+		}
+
+        Vector2 force{ 0.0f, 0.0f };
+        if (input.GetKeyDown(SDL_SCANCODE_A)) {force.x = -speed;}
+        if (input.GetKeyDown(SDL_SCANCODE_D)) {force.x = +speed;}
+        if (input.GetKeyDown(SDL_SCANCODE_W)) {force.y = -speed;}
+        if (input.GetKeyDown(SDL_SCANCODE_S)) {force.y = +speed;}
+
+        player.SetVelocity(player.GetVelocity() + (force * time.GetDeltaTime()));
+		player.Update(time.GetDeltaTime());
+
+	/*	vel += (force * time.GetDeltaTime());
 		position += (vel * time.GetDeltaTime());
+
+		position.x = math::Wrap(0.0f, (float)windowWidth, position.x);
+        position.y = math::Wrap(0.0f, (float)windowHeight, position.y);*/
 
 
         Vector2 mousePos;
@@ -74,15 +124,9 @@ int main() {
         render.Clear();
        
 
-		//Random points
-        for (int i = 0; i < (int)points.size() - 1; i++) {
-
-            render.SetColor(RandomFloat(), RandomFloat(), RandomFloat(), RandomFloat());
-            render.DrawLine(points[i].x, points[i].y, points[i+1].x, points[i+1].y);
-        }
-
-        render.SetColor(1.0f, 1.0f, 1.0f);
-        render.DrawFillRect(position.x - 20, position.y - 20, 40, 40);
+		player.Draw(render);
+        /*render.SetColor(1.0f, 1.0f, 1.0f);
+        render.DrawFillRect(position.x - 20, position.y - 20, 40, 40);*/
 
         render.Present();
     }

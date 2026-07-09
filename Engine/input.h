@@ -25,6 +25,7 @@ namespace nu
 
         bool GetButtonDown(MouseButton button) const { return m_buttonStates & GetButtonBit(button); }
         bool GetPrevButtonDown(MouseButton button) const { return m_prevButtonStates & GetButtonBit(button); }
+
         bool GetButtonPressed(MouseButton button) const { return !GetPrevButtonDown(button) && GetButtonDown(button); }
         bool GetButtonReleased(MouseButton button) const { return GetPrevButtonDown(button) && !GetButtonDown(button); }
 
