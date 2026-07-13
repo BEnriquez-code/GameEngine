@@ -1,6 +1,6 @@
 #pragma once
 #include <cmath>
-
+#include <cassert>
 namespace nu {
 	struct Vector2 {
 		float x, y;
@@ -9,16 +9,22 @@ namespace nu {
 		Vector2(float x, float y) : x{ x }, y{ y } {}
 		Vector2(float v) : x{ v }, y{ v } {}
 
+		float operator [] (unsigned int i) const { assert(i < 2); return (&x)[i]; }
+		float& operator [] (unsigned int i) { assert(i < 2); return (&x)[i]; }
+
+		bool operator == (const Vector2& v) const { return (this->x == v.x && this->y == v.y); }
+		bool operator != (const Vector2& v) const { return (this->x != v.x || this->y != v.y); }
+
 
 		Vector2 operator + (const Vector2& v) const {return Vector2{ this->x + v.x, this->y + v.y };}
 		Vector2 operator - (const Vector2& v) const {return Vector2{ this->x - v.x, this->y - v.y };}
 		Vector2 operator * (const Vector2& v) const {return Vector2{ this->x * v.x, this->y * v.y };}
 		Vector2 operator / (const Vector2& v) const {return Vector2{ this->x / v.x, this->y / v.y };}
 
-		Vector2 operator + (float v) const  {return Vector2{ this->x + v, this->y + v };}				  
-		Vector2 operator - (float v) const  {return Vector2{ this->x - v, this->y - v };}
-		Vector2 operator * (float v) const  {return Vector2{ this->x * v, this->y * v };}				  
-		Vector2 operator / (float v) const  {return Vector2{ this->x / v, this->y / v };}
+		Vector2 operator + (float v) const {return Vector2{ this->x + v, this->y + v };}				  
+		Vector2 operator - (float v) const {return Vector2{ this->x - v, this->y - v };}
+		Vector2 operator * (float v) const {return Vector2{ this->x * v, this->y * v };}				  
+		Vector2 operator / (float v) const {return Vector2{ this->x / v, this->y / v };}
 
 		Vector2& operator += (const Vector2& v) { this->x += v.x, this->y += v.y; return *this; }
 		Vector2& operator -= (const Vector2& v) { this->x -= v.x, this->y -= v.y; return *this; }
@@ -30,13 +36,18 @@ namespace nu {
 		Vector2& operator *= (float v) { this->x *= v, this->y *= v; return *this; }
 		Vector2& operator /= (float v) { this->x /= v, this->y /= v; return *this; }
 
+		float LengthSqr() const{ return (x * x) + (y * y);}
+		float Length() const {return sqrt(LengthSqr());}
 
-		float LengthSqr() const{
-			return (x * x) + (y * y);
-		}
+		Vector2 Normalized() const {return (*this) / Length();}
+		float Dot(const Vector2& v) const { return (this->x * v.x) + (this->y * v.y); }
+		float Angle() const { return atan2(this->y, this->x); }
+		float AngleBetween(const Vector2& v) const { return acos(Dot(v)); }
+		Vector2 Rotate(float radians) {
+			float x = this->x * cos(radians) - this->y * sin(radians);
+			float y = this->x * sin(radians) + this->y * cos(radians);
 
-		float Length() const {
-			return sqrt(LengthSqr());
+			return { x, y };
 		}
 	};
 }
