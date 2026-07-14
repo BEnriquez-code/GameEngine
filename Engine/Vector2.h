@@ -26,15 +26,15 @@ namespace nu {
 		Vector2 operator * (float v) const {return Vector2{ this->x * v, this->y * v };}				  
 		Vector2 operator / (float v) const {return Vector2{ this->x / v, this->y / v };}
 
-		Vector2& operator += (const Vector2& v) { this->x += v.x, this->y += v.y; return *this; }
-		Vector2& operator -= (const Vector2& v) { this->x -= v.x, this->y -= v.y; return *this; }
-		Vector2& operator *= (const Vector2& v) { this->x *= v.x, this->y *= v.y; return *this; }
-		Vector2& operator /= (const Vector2& v) { this->x /= v.x, this->y /= v.y; return *this; }
+		Vector2& operator += (const Vector2& v) { this->x += v.x; this->y += v.y; return *this; }
+		Vector2& operator -= (const Vector2& v) { this->x -= v.x; this->y -= v.y; return *this; }
+		Vector2& operator *= (const Vector2& v) { this->x *= v.x; this->y *= v.y; return *this; }
+		Vector2& operator /= (const Vector2& v) { this->x /= v.x; this->y /= v.y; return *this; }
 
-		Vector2& operator += (float v) { this->x += v, this->y += v; return *this; }
-		Vector2& operator -= (float v) { this->x -= v, this->y -= v; return *this; }
-		Vector2& operator *= (float v) { this->x *= v, this->y *= v; return *this; }
-		Vector2& operator /= (float v) { this->x /= v, this->y /= v; return *this; }
+		Vector2& operator += (float v) { this->x += v; this->y += v; return *this; }
+		Vector2& operator -= (float v) { this->x -= v; this->y -= v; return *this; }
+		Vector2& operator *= (float v) { this->x *= v; this->y *= v; return *this; }
+		Vector2& operator /= (float v) { this->x /= v; this->y /= v; return *this; }
 
 		float LengthSqr() const{ return (x * x) + (y * y);}
 		float Length() const {return sqrt(LengthSqr());}

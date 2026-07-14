@@ -5,7 +5,7 @@ namespace nu {
         Vector2 position;
         float scale;
         float rotation;
+        
     };
-
 
 }

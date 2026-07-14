@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "Renderer.h"
+#include "Model.h"
+#include "Transform.h"
 
 #include <iostream>
 
@@ -62,6 +64,35 @@ namespace nu
         SDL_FRect ret{ x, y, w, h };
 		SDL_RenderRect(m_renderer, &ret);
     }
+
+    void Renderer::DrawModel(const Model& model, const Transform& transform) const
+    {   
+        std::cout << "Drawing Model! Meshes: " << model.GetMeshes().size() << " Player Pos: " << transform.position.x << ", " << transform.position.y << std::endl;
+        SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+
+        for (const auto& mesh : model.GetMeshes()) {
+            //SetColor(mesh.GetColor().r, mesh.GetColor().g, mesh.GetColor().b, 1.0f);
+            //SetColor(1.0f, 1.0f, 1.0f, 1.0f);
+            auto& points = mesh.GetPoints();
+
+
+            for (int i = 0; i < (int)points.size() - 1; i++) {
+                Vector2 v1 = points[i];
+                Vector2 v2 = points[i + 1];
+
+
+                v1 *= transform.scale;
+                v2 *= transform.scale;
+
+                v1 += transform.position;
+                v2 += transform.position;
+
+                DrawLine(v1.x, v1.y, v2.x, v2.y);
+            }
+        }
+    }
+
 
     void Renderer::Shutdown() {
         SDL_DestroyRenderer(m_renderer);

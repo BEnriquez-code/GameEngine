@@ -12,10 +12,13 @@ namespace nu {
         m_transform.position.y = math::Wrap(0.0f, 1024.0f, m_transform.position.y);
     }
     void Actor::Draw(const Renderer& render) const {
-        render.SetColor(1.0f, 1.0f, 1.0f);
-        render.DrawFillRect(m_transform.position.x - (m_transform.scale * 0.5f), 
+       
+       /*render.SetColor(1.0f, 1.0f, 1.0f);
+       render.DrawFillRect(m_transform.position.x - (m_transform.scale * 0.5f), 
                             m_transform.position.y - (m_transform.scale * 0.5f), 
-                            m_transform.scale, m_transform.scale);
+                            40, 40);*/
+
+        render.DrawModel(m_model, m_transform);
     }
 
 }
