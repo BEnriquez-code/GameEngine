@@ -2,6 +2,7 @@
 #include "Renderer.h"
 #include "Model.h"
 #include "Transform.h"
+#include "MathUtils.h"
 
 #include <iostream>
 
@@ -67,15 +68,13 @@ namespace nu
 
     void Renderer::DrawModel(const Model& model, const Transform& transform) const
     {   
-        std::cout << "Drawing Model! Meshes: " << model.GetMeshes().size() << " Player Pos: " << transform.position.x << ", " << transform.position.y << std::endl;
+        
         SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 
 
         for (const auto& mesh : model.GetMeshes()) {
-            //SetColor(mesh.GetColor().r, mesh.GetColor().g, mesh.GetColor().b, 1.0f);
-            //SetColor(1.0f, 1.0f, 1.0f, 1.0f);
-            auto& points = mesh.GetPoints();
 
+            auto& points = mesh.GetPoints();
 
             for (int i = 0; i < (int)points.size() - 1; i++) {
                 Vector2 v1 = points[i];
@@ -84,6 +83,9 @@ namespace nu
 
                 v1 *= transform.scale;
                 v2 *= transform.scale;
+
+                v1 = v1.Rotate(transform.rotation * math::DegToRad);
+                v2 = v2.Rotate(transform.rotation * math::DegToRad);
 
                 v1 += transform.position;
                 v2 += transform.position;

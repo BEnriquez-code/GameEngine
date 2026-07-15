@@ -5,6 +5,9 @@ namespace nu::math{
 	constexpr float TWO_PI = PI * 2;
 	constexpr float HALF_PI = PI / 2;
 
+	constexpr float RadToDeg = 180.0f / PI;
+	constexpr float DegToRad = PI / 180.0f;
+
 	template<typename T>
 	T Min (T a, T b) {
 		return (a < b) ? a : b;

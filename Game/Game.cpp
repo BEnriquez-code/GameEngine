@@ -1,4 +1,6 @@
 #include "Engine.h"
+#include "Player.h"
+
 #include "SDL3/SDL.h"
 #include <iostream>
 #include <vector>
@@ -8,23 +10,24 @@ using namespace nu;
 
 
 int main() {
-    //Intialization
-    Renderer render;
-    const int windowWidth = 1920;
-    const int windowHeight = 1024;
-
-    render.Initialize("Game Engine", windowWidth, windowHeight);
-    Input input;
-	input.Initialize();
-	Time time;
+    //Intialization 
+    engine.Initialize();
     
-    Mesh mesh{ {Vector2{-3, 3}, Vector2{3,3}, Vector2{0,0} }, Color{0.0f, 0.0f, 1.0f} };
-
-    Actor player{ Transform {Vector2{640.0f, 512.0f}, 0.0f, 50.0f}, vector<Mesh>{ mesh } };
+    Mesh mesh{ 
+        { 
+            Vector2{ 2, 0 }, 
+            Vector2{ -2, 2 }, 
+            Vector2{ -1, 0 }, 
+            Vector2{ -2, -2 }, 
+            Vector2{ 2, 0 }
+        }, 
+           Color{0.0f, 0.0f, 1.0f} 
+};
+	
+    Player player{ Transform {Vector2{640.0f, 512.0f}, 0.0f, 50.0f}, vector<Mesh>{ mesh } };
 
     Vector2 position{640.0f, 512.0f};
     Vector2 vel{ 0.0f, 0.0f };
-	float speed = 200.0f;
 
     vector<Vector2> mouseLinePoints;
    
@@ -43,12 +46,15 @@ int main() {
                     quit = true;
 			}
         }
-		input.Update();
-        time.Tick();
+
+        engine.Update();
+        
+        player.SetRotation(90.0f);
+        player.Update(engine.GetTime().GetDeltaTime());
 
 
-        if (input.GetButtonDown(Input::MouseButton::Left)) {
-			Vector2 v = input.GetMousePosition();
+        if (engine.GetInput().GetButtonDown(Input::MouseButton::Left)) {
+			Vector2 v = engine.GetInput().GetMousePosition();
             if (mouseLinePoints.empty()) {
                 mouseLinePoints.push_back(v);
             }
@@ -60,42 +66,29 @@ int main() {
                 }
             }
             
-
-            mouseLinePoints.push_back(input.GetMousePosition());
 		}
 
-        if (input.GetButtonPressed(Input::MouseButton::Right)) {
+        if (engine.GetInput().GetButtonPressed(Input::MouseButton::Right)) {
             if (!mouseLinePoints.empty())mouseLinePoints.pop_back();
 		}
 
-        Vector2 force{ 0.0f, 0.0f };
         
 
-        if (input.GetKeyDown(SDL_SCANCODE_A)) {force.x = -speed;}
-        if (input.GetKeyDown(SDL_SCANCODE_D)) {force.x = +speed;}
-        if (input.GetKeyDown(SDL_SCANCODE_W)) {force.y = -speed;}
-        if (input.GetKeyDown(SDL_SCANCODE_S)) {force.y = +speed;}
-
-        player.SetVelocity(player.GetVelocity() + (force * time.GetDeltaTime()));
-		player.Update(time.GetDeltaTime());
-
-
-
         //Render
-        render.SetColor(0.0f, 0.0f, 0.0f);
-        render.Clear();
+        engine.GetRenderer().SetColor(0.0f, 0.0f, 0.0f);
+        engine.GetRenderer().Clear();
 
         for (int i = 0; i< (int)mouseLinePoints.size() - 1; i++) {
-            render.SetColor(1.0f, 1.0f, 1.0f);
-            render.DrawLine(mouseLinePoints[i].x, mouseLinePoints[i].y, mouseLinePoints[i+1].x, mouseLinePoints[i+1].y);
+            engine.GetRenderer().SetColor(1.0f, 1.0f, 1.0f);
+            engine.GetRenderer().DrawLine(mouseLinePoints[i].x, mouseLinePoints[i].y, mouseLinePoints[i+1].x, mouseLinePoints[i+1].y);
         }
        
 
-		player.Draw(render);
-        render.Present();
+		player.Draw(engine.GetRenderer());
+        engine.GetRenderer().Present();
     }
 
-    render.Shutdown();
+    engine.GetRenderer().Shutdown();
 
     return 0;
 }
