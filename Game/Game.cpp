@@ -49,7 +49,7 @@ int main() {
 
         engine.Update();
         
-        player.SetRotation(90.0f);
+        player.SetRotation(player.GetTransform().rotation + (90.0f * engine.GetTime().GetDeltaTime()));
         player.Update(engine.GetTime().GetDeltaTime());
 
 
