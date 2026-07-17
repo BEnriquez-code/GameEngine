@@ -67,12 +67,11 @@ namespace nu
     }
 
     void Renderer::DrawModel(const Model& model, const Transform& transform) const
-    {   
-        
-        SetColor(1.0f, 1.0f, 1.0f, 1.0f);
-
+    {     
 
         for (const auto& mesh : model.GetMeshes()) {
+			Color color = mesh.GetColor();
+			SetColor(color.r, color.g, color.b, 1.0f);
 
             auto& points = mesh.GetPoints();
 

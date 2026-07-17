@@ -13,18 +13,63 @@ int main() {
     //Intialization 
     engine.Initialize();
     
-    Mesh mesh{ 
+    Mesh cockpitMesh{ 
         { 
             Vector2{ 2, 0 }, 
-            Vector2{ -2, 2 }, 
-            Vector2{ -1, 0 }, 
-            Vector2{ -2, -2 }, 
+            Vector2{ 1, 0.5f }, 
+            Vector2{ 1, -0.5f }, 
             Vector2{ 2, 0 }
         }, 
-           Color{0.0f, 0.0f, 1.0f} 
-};
+           Color{1.0f, 1.0f, 0.0f} 
+    };
+
+    Mesh bodyMesh {
+        {
+           Vector2{1, 0.5f},
+           Vector2{-2, 0.5f},
+           Vector2{-2, -0.5f},
+		   Vector2{1, -0.5f},
+		   Vector2{1, 0.5f},
+        },
+        Color{0.0f, 1.0f, 1.0f}
+    };
+
+    Mesh leftWingMesh {
+        {
+            Vector2{0, 0.5f},
+            Vector2{-1.5f, 2},
+            Vector2{-2, 2},
+            Vector2{-1.5, 0.5f}
+        },
+        Color{1.0f, 0.0f, 1.0f}
+	};
+
+    Mesh rightWinMesh {
+        {
+            Vector2{0, -0.5f},
+            Vector2{-1.5f, -2},
+            Vector2{-2, -2},
+            Vector2{-1.5f, -0.5f}
+        },
+        Color{0.0f, 1.0f, 0.0f}
+    };
+
+    Mesh flameMesh{ 
+        {
+            Vector2{-2, 0.5},
+            Vector2{-3, 0.7f},
+            Vector2{-2.5f, 0.3f},
+            Vector2{-3, 0},
+			Vector2{-2.5f, -0.3f},
+            Vector2{-3, -0.7f},
+			Vector2{-2, -0.5f}
+        },
+        Color{1.0f, 0.0f, 0.0f}
+    };
+
+	Model playerModel{ {cockpitMesh, bodyMesh, leftWingMesh, rightWinMesh, flameMesh} };
 	
-    Player player{ Transform {Vector2{640.0f, 512.0f}, 0.0f, 50.0f}, vector<Mesh>{ mesh } };
+    Player player{ Transform {Vector2{640.0f, 512.0f}, 0.0f, 50.0f}, playerModel };
 
     Vector2 position{640.0f, 512.0f};
     Vector2 vel{ 0.0f, 0.0f };
