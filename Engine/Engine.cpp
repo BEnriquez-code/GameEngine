@@ -16,14 +16,17 @@ namespace nu {
 
 		m_renderer.Initialize("Game Engine", windowWidth, windowHeight);
 		m_input.Initialize();
+		m_audio.Initialize();
 
 		return true;
 	};
 	void Engine::Shutdown() {
+		m_audio.Shutdown();
 		m_input.Shutdown();
 		m_renderer.Shutdown();
 	};
 	void Engine::Update() {
+		m_audio.Update();
 		m_input.Update();
 		m_time.Tick();
 	};

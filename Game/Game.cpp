@@ -1,5 +1,6 @@
 #include "Engine.h"
 #include "Player.h"
+#include <fmod.hpp>
 
 #include "SDL3/SDL.h"
 #include <iostream>
@@ -12,7 +13,16 @@ using namespace nu;
 int main() {
     //Intialization 
     engine.Initialize();
+
     
+    engine.GetAudio().AddSound("test", "test.wav");
+    engine.GetAudio().AddSound("thrust", "thrust.wav");
+    engine.GetAudio().AddSound("mario", "mario.wav");
+    engine.GetAudio().AddSound("hee-hee", "hee-hee.mp3");
+    engine.GetAudio().AddSound("bass", "bass.wav");
+    
+    
+
     Mesh cockpitMesh{ 
         { 
             Vector2{ 2, 0 }, 
@@ -75,6 +85,8 @@ int main() {
     Vector2 vel{ 0.0f, 0.0f };
 
     vector<Vector2> mouseLinePoints;
+
+    
    
    
 	//MAIN LOOP
@@ -92,9 +104,10 @@ int main() {
 			}
         }
 
+
         engine.Update();
         
-        player.SetRotation(player.GetTransform().rotation + (90.0f * engine.GetTime().GetDeltaTime()));
+        //player.SetRotation(player.GetTransform().rotation + (90.0f * engine.GetTime().GetDeltaTime()));
         player.Update(engine.GetTime().GetDeltaTime());
 
 

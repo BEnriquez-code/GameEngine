@@ -4,6 +4,7 @@
 #include "Vector3.h"
 #include "MathUtils.h"
 #include "Transform.h"
+#include <fmod.hpp>
 
 
 
@@ -11,7 +12,7 @@
 #include "Renderer.h"
 #include "Input.h"
 #include "GameTime.h"
-
+#include "Audio.h"
 #include "Actor.h"
 
 namespace nu {
@@ -25,11 +26,13 @@ namespace nu {
 
 		Input& GetInput() { return m_input; };
 		Renderer& GetRenderer() { return m_renderer; };
+		Audio& GetAudio() { return m_audio; };
 		Time& GetTime() { return m_time; };
 
 	private:
 		Input m_input;
 		Renderer m_renderer;
+		Audio m_audio;
 
 		Time m_time;
 	};
