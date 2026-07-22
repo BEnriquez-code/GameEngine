@@ -14,13 +14,57 @@ int main() {
     //Intialization 
     engine.Initialize();
 
+
+    cout << "Directory Operations:\n";
+    cout << "Working directory: " << GetWorkingDirectory() << "\n";
+    cout << "Setting directory to 'Assets'...\n";
+    SetWorkingDirectory("Assets");
+    cout << "New directory: " << GetWorkingDirectory() << "\n\n";
+
+    cout << "Files in Directory:\n";
+    auto filenames = GetFilesInDirectory(GetWorkingDirectory());
+    for (const auto& filename : filenames)
+    {
+        cout << filename << "\n";
+    }
+    cout << "\n";
+
+    if (!filenames.empty())
+    {
+        // get filename
+        string str = GetFilename(filenames[0]);
+        cout << "Filename: " << str << "\n";
+
+        // get extension
+        str = GetFileExtension(filenames[0]);
+        cout << "Extension: " << str << "\n";
+
+        // get filename no extension
+        str = GetFilenameNoExtension(filenames[0]);
+        cout << "Filename No Extension: " << str << "\n\n";
+    }
+
+    // read and display text file
+    std::cout << "Text File Reading:\n";
+    std::string str;
+    if (nu::ReadTextFile("test.txt", str))
+    {
+        std::cout << str << "\n";
+    }
+
+    // write to text file
+    cout << "Text File Writing:\n";
+    WriteTextFile("test.txt", "Hello, World!", true);
+    if (ReadTextFile("test.txt", str))
+    {
+        cout << str << "\n";
+    }
     
     engine.GetAudio().AddSound("test", "test.wav");
     engine.GetAudio().AddSound("thrust", "thrust.wav");
     engine.GetAudio().AddSound("mario", "mario.mp3");
     engine.GetAudio().AddSound("hee-hee", "hee-hee.mp3");
     engine.GetAudio().AddSound("bass", "bass.wav");
-    
     
 
     Mesh cockpitMesh{ 
