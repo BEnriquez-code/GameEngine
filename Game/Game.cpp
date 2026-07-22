@@ -17,7 +17,7 @@ int main() {
     
     engine.GetAudio().AddSound("test", "test.wav");
     engine.GetAudio().AddSound("thrust", "thrust.wav");
-    engine.GetAudio().AddSound("mario", "mario.wav");
+    engine.GetAudio().AddSound("mario", "mario.mp3");
     engine.GetAudio().AddSound("hee-hee", "hee-hee.mp3");
     engine.GetAudio().AddSound("bass", "bass.wav");
     
@@ -86,7 +86,7 @@ int main() {
 
     vector<Vector2> mouseLinePoints;
 
-    
+    engine.GetAudio().PlaySound("hee-hee");
    
    
 	//MAIN LOOP

@@ -13,6 +13,7 @@ namespace nu {
 		void* extradriverdata = nullptr;
 		if (m_audioSystem->init(32, FMOD_INIT_NORMAL, extradriverdata) != FMOD_OK) {
 			std::cout << "Failed to initailize FMOD system" << endl;
+			return false;
 		}
 
 		return true;
