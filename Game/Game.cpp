@@ -11,8 +11,8 @@ using namespace nu;
 
 
 int main() {
-    //Intialization 
-    engine.Initialize();
+    //Intialization
+    Engine::Get().Initialize();
 
 
     cout << "Directory Operations:\n";
@@ -51,20 +51,12 @@ int main() {
     {
         std::cout << str << "\n";
     }
-
-    // write to text file
-    cout << "Text File Writing:\n";
-    WriteTextFile("test.txt", "Hello, World!", true);
-    if (ReadTextFile("test.txt", str))
-    {
-        cout << str << "\n";
-    }
     
-    engine.GetAudio().AddSound("test", "test.wav");
-    engine.GetAudio().AddSound("thrust", "thrust.wav");
-    engine.GetAudio().AddSound("mario", "mario.mp3");
-    engine.GetAudio().AddSound("hee-hee", "hee-hee.mp3");
-    engine.GetAudio().AddSound("bass", "bass.wav");
+    Engine::Get().GetAudio().AddSound("test", "test.wav");
+    Engine::Get().GetAudio().AddSound("thrust", "thrust.wav");
+    Engine::Get().GetAudio().AddSound("mario", "mario.mp3");
+    Engine::Get().GetAudio().AddSound("hee-hee", "hee-hee.mp3");
+    Engine::Get().GetAudio().AddSound("bass", "bass.wav");
     
 
     Mesh cockpitMesh{ 
@@ -130,7 +122,7 @@ int main() {
 
     vector<Vector2> mouseLinePoints;
 
-    engine.GetAudio().PlaySound("hee-hee");
+    Engine::Get().GetAudio().PlaySound("hee-hee");
    
    
 	//MAIN LOOP
@@ -149,14 +141,14 @@ int main() {
         }
 
 
-        engine.Update();
+        Engine::Get().Update();
         
-        //player.SetRotation(player.GetTransform().rotation + (90.0f * engine.GetTime().GetDeltaTime()));
-        player.Update(engine.GetTime().GetDeltaTime());
+        //player.SetRotation(player.GetTransform().rotation + (90.0f * Engine::Get().GetTime().GetDeltaTime()));
+        player.Update(Engine::Get().GetTime().GetDeltaTime());
 
 
-        if (engine.GetInput().GetButtonDown(Input::MouseButton::Left)) {
-			Vector2 v = engine.GetInput().GetMousePosition();
+        if (Engine::Get().GetInput().GetButtonDown(Input::MouseButton::Left)) {
+			Vector2 v = Engine::Get().GetInput().GetMousePosition();
             if (mouseLinePoints.empty()) {
                 mouseLinePoints.push_back(v);
             }
@@ -170,27 +162,27 @@ int main() {
             
 		}
 
-        if (engine.GetInput().GetButtonPressed(Input::MouseButton::Right)) {
+        if (Engine::Get().GetInput().GetButtonPressed(Input::MouseButton::Right)) {
             if (!mouseLinePoints.empty())mouseLinePoints.pop_back();
 		}
 
         
 
         //Render
-        engine.GetRenderer().SetColor(0.0f, 0.0f, 0.0f);
-        engine.GetRenderer().Clear();
+        Engine::Get().GetRenderer().SetColor(0.0f, 0.0f, 0.0f);
+        Engine::Get().GetRenderer().Clear();
 
         for (int i = 0; i< (int)mouseLinePoints.size() - 1; i++) {
-            engine.GetRenderer().SetColor(1.0f, 1.0f, 1.0f);
-            engine.GetRenderer().DrawLine(mouseLinePoints[i].x, mouseLinePoints[i].y, mouseLinePoints[i+1].x, mouseLinePoints[i+1].y);
+            Engine::Get().GetRenderer().SetColor(1.0f, 1.0f, 1.0f);
+            Engine::Get().GetRenderer().DrawLine(mouseLinePoints[i].x, mouseLinePoints[i].y, mouseLinePoints[i+1].x, mouseLinePoints[i+1].y);
         }
        
 
-		player.Draw(engine.GetRenderer());
-        engine.GetRenderer().Present();
+		player.Draw(Engine::Get().GetRenderer());
+        Engine::Get().GetRenderer().Present();
     }
 
-    engine.GetRenderer().Shutdown();
+    Engine::Get().GetRenderer().Shutdown();
 
     return 0;
 }
