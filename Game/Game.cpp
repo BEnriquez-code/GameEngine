@@ -5,12 +5,22 @@
 #include "SDL3/SDL.h"
 #include <iostream>
 #include <vector>
+#include <map>
 
 using namespace std;
 using namespace nu;
 
 
 int main() {
+    map<string, int> students;
+    students["Aiden"] = 16;
+    students["Jack"] = 17;
+    students["River"] = 15;
+
+    cout << students["Aiden"] << endl;
+
+
+
     //Intialization
     Engine::Get().Initialize();
 
