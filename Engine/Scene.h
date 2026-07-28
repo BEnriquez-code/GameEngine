@@ -19,6 +19,7 @@ namespace nu{
 		void UpdateCollisions();
 
 		std::vector<Actor*> m_actors;
+		std::vector<Actor*>m_pendingActors;
 	};
 
 	template<typename T>
@@ -32,4 +33,4 @@ namespace nu{
 
 		return nullptr;
 	}
-}
+}	

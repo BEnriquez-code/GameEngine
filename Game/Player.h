@@ -1,9 +1,19 @@
 #pragma once
 #include "Actor.h"
 
+struct PlayerDesc : public nu::ActorDesc {
+    float speed;
+};
+
 class Player : public nu::Actor {
 public:
     Player() = default;
+
+    Player(const PlayerDesc& playerDesc) :
+        Actor(playerDesc),
+        m_speed(playerDesc.speed) {
+    }
+
     Player(const nu::Transform& transform) : nu::Actor{ transform } {}
     Player(const nu::Transform& transform, const nu::Model& model) :
         Actor{ transform, model }{}

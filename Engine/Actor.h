@@ -12,6 +12,8 @@ namespace nu {
         std::string tag;
         Transform transform;
         Vector2 velocity;
+        float damping{ 0.0f };
+        float lifespan{ 0.0f };
         Model model;
     };
 
@@ -53,6 +55,9 @@ namespace nu {
 
         Scene* GetScene() {return m_scene;}
 
+        void SetDestroyed(bool destroy = true) { m_destroyed = destroy; }
+        bool GetDestroyed() const { return m_destroyed; }
+
         friend Scene;
 
     protected:
@@ -61,6 +66,9 @@ namespace nu {
 
         Transform m_transform;
         Vector2 m_velocity{ 0, 0 };
+        float m_damping{ 0.0f };
+        float m_lifespan{ 0 };
+        bool m_destroyed{ false };
       
         Model m_model;
         Scene* m_scene = nullptr;

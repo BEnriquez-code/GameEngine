@@ -7,6 +7,7 @@
 #include <fmod.hpp>
 
 
+#include "Text.h"
 
 // systems
 #include "File.h"
@@ -14,7 +15,12 @@
 #include "Input.h"
 #include "GameTime.h"
 #include "Audio.h"
+
+
+//framework
+#include "Game.h"
 #include "Actor.h"
+#include "Scene.h"
 
 namespace nu {
 	class Engine {
