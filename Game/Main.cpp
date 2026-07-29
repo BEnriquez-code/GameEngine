@@ -23,8 +23,14 @@ int main() {
     SpaceGame game;
     game.Initialize();
 
- 
+    SetWorkingDirectory("Fonts");
+    Font* font = new Font();
+    font->Load("Arcade.ttf", 90);
 
+    Text* text = new Text(font);
+    text->Create(Engine::Get().GetRenderer(), "Hello World", Vector3{0.0f, 1.0f, 0.0f});
+
+    //SetWorkingDirectory("Assets");
     
     Engine::Get().GetAudio().AddSound("test", "test.wav");
     Engine::Get().GetAudio().AddSound("thrust", "thrust.wav");
@@ -89,6 +95,8 @@ int main() {
             Engine::Get().GetRenderer().DrawLine(mouseLinePoints[i].x, mouseLinePoints[i].y, mouseLinePoints[i+1].x, mouseLinePoints[i+1].y);
         }
        
+        text->Draw(Engine::Get().GetRenderer(), 40.0f, 40.0f);
+
 
 		game.Draw(Engine::Get().GetRenderer());
         Engine::Get().GetRenderer().Present();

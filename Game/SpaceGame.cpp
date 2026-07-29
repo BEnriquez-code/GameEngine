@@ -28,6 +28,8 @@ void SpaceGame::Update(float dt) {
 			m_gameState = GameState::StartLevel;
 			break;
 		case GameState::StartLevel:
+			
+
 		{
 			PlayerDesc playerDesc;
 			playerDesc.name = "Player";
@@ -58,6 +60,7 @@ void SpaceGame::Update(float dt) {
 				
 			}
 		}
+
 
 			m_gameState = GameState::Game;
 			break;
