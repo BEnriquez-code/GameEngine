@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Assets.h"
+#include "SpaceGame.h"
 
 #include <fmod.hpp>
 
@@ -16,18 +17,11 @@ using namespace nu;
 
 int main() {
     SetWorkingDirectory("Assets");
-    map<string, int> students;
-    students["Aiden"] = 16;
-    students["Jack"] = 17;
-    students["River"] = 15;
-
-    cout << students["Aiden"] << endl;
-
-
 
     //Intialization
     Engine::Get().Initialize();
 
+   
     Scene scene;
 
     
@@ -37,21 +31,6 @@ int main() {
     Engine::Get().GetAudio().AddSound("hee-hee", "hee-hee.mp3");
     Engine::Get().GetAudio().AddSound("bass", "bass.wav");
     
-
-   
-
-    for (int i = 0; i < 20; i++) {
-        EnemyDesc enemyDesc;
-        enemyDesc.name = "Enemy";
-        enemyDesc.tag = "Enemy";
-        enemyDesc.model = assets::enemyModel;
-        enemyDesc.transform = Transform{ Vector2{RandomFloat((float)Engine::Get().GetRenderer().GetWidth()), RandomFloat((float)Engine::Get().GetRenderer().GetHeight())}, 90.0f, 10.0f };
-        enemyDesc.damping = 3.0f;
-        enemyDesc.speed = RandomFloat(1000.0f, 1500.0f);
-
-        Enemy* enemy = new Enemy(enemyDesc);
-        scene.AddActor(enemy);
-    }
 
     Vector2 position{640.0f, 512.0f};
     Vector2 vel{ 0.0f, 0.0f };

@@ -17,6 +17,7 @@ public:
 		Game{ scene } {}
 
 	bool Initialize() override;
+	void Shutdown() override;
 
 	void Update(float dt) override;
 	void Draw(const class nu::Renderer& renderer) override;

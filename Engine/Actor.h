@@ -22,11 +22,11 @@ namespace nu {
         Actor() = default;
         Actor(const Transform& transform) : m_transform{ transform } {}
         Actor(const ActorDesc& actorDesc) :
-            m_name{ actorDesc.name },
             m_tag{ actorDesc.tag },
+            m_model{ actorDesc.model },
+            m_name{ actorDesc.name },
             m_transform{ actorDesc.transform },
-            m_velocity{ actorDesc.velocity },
-            m_model{ actorDesc.model }
+            m_velocity{ actorDesc.velocity }
         {}
 
         Actor(const Transform& transform, const Model& model) :

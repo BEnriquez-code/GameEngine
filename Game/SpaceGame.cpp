@@ -1,6 +1,7 @@
 #include "SpaceGame.h"
 #include "Engine.h"
 #include "Player.h"
+#include "Enemy.h"
 #include "Assets.h"
 
 using namespace nu;
@@ -37,6 +38,22 @@ void SpaceGame::Update(float dt) {
 
 			Player* player = new Player(playerDesc);
 			m_scene->AddActor(player);
+
+		}
+
+		{
+			for (int i = 0; i < 20; i++) {
+				EnemyDesc enemyDesc;
+				enemyDesc.name = "Enemy";
+				enemyDesc.tag = "Enemy";
+				enemyDesc.model = assets::enemyModel;
+				enemyDesc.transform = Transform{ Vector2{RandomFloat((float)Engine::Get().GetRenderer().GetWidth()), RandomFloat((float)Engine::Get().GetRenderer().GetHeight())}, 90.0f, 10.0f };
+				enemyDesc.damping = 3.0f;
+				enemyDesc.speed = RandomFloat(1000.0f, 1500.0f);
+
+				Enemy* enemy = new Enemy(enemyDesc);
+				m_scene->AddActor(enemy);
+			}
 		}
 
 			break;
@@ -52,4 +69,9 @@ void SpaceGame::Update(float dt) {
 
 void SpaceGame::Draw(const class Renderer& renderer) {
 	m_scene->Draw(renderer);
+}
+
+void SpaceGame::Shutdown() {
+	delete m_scene;
+	m_scene = nullptr;
 }
