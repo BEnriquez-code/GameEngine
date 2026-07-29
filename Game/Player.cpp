@@ -41,19 +41,32 @@ void Player::Update(float dt) {
         bulletDesc.speed = 1000.0f;
         bulletDesc.lifespan = 2.0f;
 
+
         Bullet* bullet = new Bullet(bulletDesc);
         m_scene->AddActor(bullet);
+
     }
     
+    nu::Particle particle;
+    particle.position = m_transform.position;
+    particle.color = { 1.0f, 1.0f, 1.0f };
+    particle.lifespan = nu::RandomFloat(0.5f, 1.5f);
+    particle.velocity = { nu::RandomFloat(-200.0f, 200.0f), nu::RandomFloat(-200.0f, 200.0f) };
+
 
     SetVelocity(GetVelocity() + (force * dt)); 
-    //std::cout << t << endl;
     Actor::Update(dt);
 
-    
     
 }
 
 void Player::Draw(const nu::Renderer& renderer) const {
 	Actor::Draw(renderer);
 }
+
+//void Player::OnCollision(Actor* other) {
+//    if (other->GetTag() == "Enemy") {
+//        SetDestroyed();
+//        other->SetDestroyed();
+//    }
+//}

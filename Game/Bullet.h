@@ -3,16 +3,17 @@
 
 struct BulletDesc : public nu::ActorDesc {
 	float speed;
+    
 };
 
 class Bullet : public nu::Actor {
 public:
     Bullet() = default;
 
-    Bullet(const BulletDesc& enemyDesc) :
-        Actor(enemyDesc),
-        m_speed(enemyDesc.speed) {
-    }
+    Bullet(const BulletDesc& bulletDesc) :
+        Actor(bulletDesc),
+        m_speed(bulletDesc.speed)
+    {}
 
     Bullet(const nu::Transform& transform, const nu::Model& model) :
         Actor(transform, model) {

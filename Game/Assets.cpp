@@ -78,7 +78,7 @@ namespace assets{
             Vector2{ -1, 1 },
             Vector2{ -1, -1 },
         },
-        Color{ 1.0f, 0.0f, 0.0f }
+        Color{ 0.0f, 1.0f, 0.0f }
     };
 
     Model bulletModel{ std::vector<Mesh>{bulletMesh} };

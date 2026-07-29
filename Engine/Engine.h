@@ -15,6 +15,7 @@
 #include "Input.h"
 #include "GameTime.h"
 #include "Audio.h"
+#include "ParticleSystem.h"
 
 
 //framework
@@ -36,6 +37,9 @@ namespace nu {
 		Audio& GetAudio() { return m_audio; };
 		Time& GetTime() { return m_time; };
 
+		ParticleSystem& GetPS() { return m_particleSystem; }
+		
+
 	private:
 		Engine() = default;
 
@@ -44,5 +48,6 @@ namespace nu {
 		Audio m_audio;
 
 		Time m_time;
+		ParticleSystem m_particleSystem;
 	};
 }

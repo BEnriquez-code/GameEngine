@@ -26,7 +26,8 @@ namespace nu {
             m_model{ actorDesc.model },
             m_name{ actorDesc.name },
             m_transform{ actorDesc.transform },
-            m_velocity{ actorDesc.velocity }
+            m_velocity{ actorDesc.velocity },
+            m_lifespan{actorDesc.lifespan}
         {}
 
         Actor(const Transform& transform, const Model& model) :

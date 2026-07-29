@@ -21,6 +21,7 @@ namespace nu {
 		Vector2 operator * (const Vector2& v) const {return Vector2{ this->x * v.x, this->y * v.y };}
 		Vector2 operator / (const Vector2& v) const {return Vector2{ this->x / v.x, this->y / v.y };}
 
+
 		Vector2 operator + (float v) const {return Vector2{ this->x + v, this->y + v };}				  
 		Vector2 operator - (float v) const {return Vector2{ this->x - v, this->y - v };}
 		Vector2 operator * (float v) const {return Vector2{ this->x * v, this->y * v };}				  
@@ -43,6 +44,8 @@ namespace nu {
 		float Dot(const Vector2& v) const { return (this->x * v.x) + (this->y * v.y); }
 		float Angle() const { return atan2(this->y, this->x); }
 		float AngleBetween(const Vector2& v) const { return acos(Dot(v)); }
+
+		
 
 		Vector2 Rotate(float radians) const {
 			

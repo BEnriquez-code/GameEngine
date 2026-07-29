@@ -15,6 +15,8 @@ using namespace std;
 using namespace nu;
 
 
+
+
 int main() {
     SetWorkingDirectory("Assets");
 
@@ -39,9 +41,6 @@ int main() {
     Engine::Get().GetAudio().AddSound("bass", "bass.wav");
     
 
-    Vector2 position{640.0f, 512.0f};
-    Vector2 vel{ 0.0f, 0.0f };
-
     vector<Vector2> mouseLinePoints;   
    
 	//MAIN LOOP
@@ -63,7 +62,7 @@ int main() {
         Engine::Get().Update();
         
         
-        game.Update(Engine::Get().GetTime().GetDeltaTime());
+        game.Update(Engine::Get().GetTime().GetDeltaTime(), mouseLinePoints);
 
         if (Engine::Get().GetInput().GetButtonDown(Input::MouseButton::Left)) {
 			Vector2 v = Engine::Get().GetInput().GetMousePosition();
@@ -97,8 +96,10 @@ int main() {
        
         text->Draw(Engine::Get().GetRenderer(), 40.0f, 40.0f);
 
+        Engine::Get().GetPS().Draw(Engine::Get().GetRenderer());
 
 		game.Draw(Engine::Get().GetRenderer());
+        
         Engine::Get().GetRenderer().Present();
     }
     game.Shutdown();
