@@ -10,7 +10,7 @@ namespace nu {
 
 		Vector2 position{ 0, 0 };
 		Vector2 velocity{ 0, 0 };
-		Color color{ 0, 0, 0 };
+		Color color{ 0.0f, 0.0f, 0.0f };
 	};
 
 	class ParticleSystem

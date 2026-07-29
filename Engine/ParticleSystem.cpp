@@ -35,7 +35,7 @@ namespace nu {
 
 			// update position with velocity (multiply by dt)
 			// TODO: update position += with particle velocity * delta time
-			particle.position += particle.velocity * dt;
+			particle.position += particle.velocity * (dt * 0.09f);
 		}
 	}
 
@@ -46,7 +46,7 @@ namespace nu {
 		{
 			if (particle.active)
 			{
-				renderer.SetColor(0.0f, 1.0f, 1.0f, 1.0f);
+				renderer.SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 				renderer.DrawPoint(particle.position.x, particle.position.y);
 				// set particle color and draw point at current position
 				// TODO: set color with particle color
