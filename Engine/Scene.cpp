@@ -2,7 +2,6 @@
 #include "Scene.h"
 #include "Actor.h"
 
-
 namespace nu {
 
 	void Scene::AddActor(Actor* actor) {
@@ -17,6 +16,7 @@ namespace nu {
 		UpdateCollisions();
 
 		std::erase_if(m_actors, [](auto actor) { return actor->m_destroyed; });
+		
 
 		// ADD PENDING ACTORS
 		m_actors.insert(m_actors.end(), m_pendingActors.begin(), m_pendingActors.end());

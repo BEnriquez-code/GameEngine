@@ -46,10 +46,12 @@ void Player::Update(float dt) {
     }
     
 
-    SetVelocity(GetVelocity() + (force * dt));  
+    SetVelocity(GetVelocity() + (force * dt)); 
+    //std::cout << t << endl;
     Actor::Update(dt);
 
-    std::cout << m_destroyed << std::endl;
+    
+    
 }
 
 void Player::Draw(const nu::Renderer& renderer) const {

@@ -4,6 +4,8 @@
 #include "Enemy.h"
 #include "Assets.h"
 
+#include <iostream>
+
 using namespace nu;
 
 bool SpaceGame::Initialize() {
@@ -38,7 +40,7 @@ void SpaceGame::Update(float dt) {
 
 			Player* player = new Player(playerDesc);
 			m_scene->AddActor(player);
-
+			
 		}
 
 		{
@@ -53,8 +55,10 @@ void SpaceGame::Update(float dt) {
 
 				Enemy* enemy = new Enemy(enemyDesc);
 				m_scene->AddActor(enemy);
+				
 			}
 		}
+
 			m_gameState = GameState::Game;
 			break;
 		case GameState::Game:
