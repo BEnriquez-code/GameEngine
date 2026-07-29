@@ -55,7 +55,7 @@ void SpaceGame::Update(float dt) {
 				m_scene->AddActor(enemy);
 			}
 		}
-
+			m_gameState = GameState::Game;
 			break;
 		case GameState::Game:
 			break;
@@ -65,6 +65,8 @@ void SpaceGame::Update(float dt) {
 	default:
 		break;
 	}
+
+	m_scene->Update(dt);
 }
 
 void SpaceGame::Draw(const class Renderer& renderer) {

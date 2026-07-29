@@ -9,7 +9,7 @@ namespace nu {
 			m_scene{ scene } {}
 
 		virtual bool Initialize() { return true; }
-		virtual void Shutdown();
+		virtual void Shutdown() = 0;
 
 		virtual void Update(float dt);
 		virtual void Draw(const class Renderer& renderer);

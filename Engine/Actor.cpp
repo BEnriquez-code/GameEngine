@@ -10,6 +10,7 @@ namespace nu {
 
         m_transform.position.x = math::Wrap(0.0f, 1920.0f, m_transform.position.x);
         m_transform.position.y = math::Wrap(0.0f, 1024.0f, m_transform.position.y);
+
     }
     void Actor::Draw(const Renderer& render) const {
        

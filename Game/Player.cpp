@@ -4,6 +4,7 @@
 #include "Renderer.h"
 #include "Engine.h"
 
+#include <iostream>
 
 void Player::Update(float dt) {
 
@@ -47,6 +48,8 @@ void Player::Update(float dt) {
 
     SetVelocity(GetVelocity() + (force * dt));  
     Actor::Update(dt);
+
+    std::cout << m_destroyed << std::endl;
 }
 
 void Player::Draw(const nu::Renderer& renderer) const {

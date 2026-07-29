@@ -20,9 +20,10 @@ int main() {
 
     //Intialization
     Engine::Get().Initialize();
+    SpaceGame game;
+    game.Initialize();
 
-   
-    Scene scene;
+ 
 
     
     Engine::Get().GetAudio().AddSound("test", "test.wav");
@@ -56,7 +57,7 @@ int main() {
         Engine::Get().Update();
         
         
-        scene.Update(Engine::Get().GetTime().GetDeltaTime());
+        game.Update(Engine::Get().GetTime().GetDeltaTime());
 
         if (Engine::Get().GetInput().GetButtonDown(Input::MouseButton::Left)) {
 			Vector2 v = Engine::Get().GetInput().GetMousePosition();
@@ -89,10 +90,10 @@ int main() {
         }
        
 
-		scene.Draw(Engine::Get().GetRenderer());
+		game.Draw(Engine::Get().GetRenderer());
         Engine::Get().GetRenderer().Present();
     }
-
+    game.Shutdown();
     Engine::Get().Shutdown();
 
     return 0;
