@@ -12,7 +12,7 @@ namespace nu {
 		virtual void Shutdown() = 0;
 
 		virtual void Update(float dt);
-		virtual void Draw(const class Renderer& renderer);
+		virtual void Draw(class Renderer& renderer);
 
 	protected:
 		Scene* m_scene = nullptr;

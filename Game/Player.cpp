@@ -7,9 +7,8 @@
 #include <iostream>
 
 void Player::Update(float dt) {
-
-    
-    nu::Vector2 force{ 0.0f, 0.0f };
+    float thrust = 0.0f;
+    float rotate = 0.0f;
 
     if (nu::Engine::Get().GetInput().GetKeyPressed(SDL_SCANCODE_4)) nu::Engine::Get().GetAudio().PlaySound("test");
     if (nu::Engine::Get().GetInput().GetKeyPressed(SDL_SCANCODE_1)) nu::Engine::Get().GetAudio().PlaySound("mario");
@@ -17,20 +16,28 @@ void Player::Update(float dt) {
     if (nu::Engine::Get().GetInput().GetKeyPressed(SDL_SCANCODE_3)) nu::Engine::Get().GetAudio().PlaySound("hee-hee");
     if (nu::Engine::Get().GetInput().GetKeyPressed(SDL_SCANCODE_6)) nu::Engine::Get().GetAudio().PlaySound("thrust");
 
+   
     if (nu::Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_A)) {
-        force.x = -m_speed;
+        rotate = -180.0f;
         
     }
     if (nu::Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_D)) { 
-        force.x = +m_speed; 
+        rotate = +180.0f; 
     }
 
     if (nu::Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_W)) { 
-        force.y = -m_speed;
+        thrust = +m_speed;
     }
     if (nu::Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_S)) { 
-        force.y = +m_speed; 
+        thrust = -m_speed; 
     }
+
+    SetRotation(m_transform.rotation + rotate * dt);
+
+
+    nu::Vector2 forward{ 1, 0 }; // ->
+    nu::Vector2 velocity = forward.Rotate(m_transform.rotation * nu::math::DegToRad) * thrust;
+    AddVelocity(velocity * dt);
 
     if (nu::Engine::Get().GetInput().GetKeyPressed(SDL_SCANCODE_SPACE)) {
         BulletDesc bulletDesc;
@@ -45,6 +52,21 @@ void Player::Update(float dt) {
         Bullet* bullet = new Bullet(bulletDesc);
         m_scene->AddActor(bullet);
 
+        bulletDesc.transform.rotation += 10.0f;
+        bullet = new Bullet(bulletDesc);
+        m_scene->AddActor(bullet);
+
+        bulletDesc.transform.rotation -= 20.0f;
+        bullet = new Bullet(bulletDesc);
+        m_scene->AddActor(bullet);
+
+    }
+
+    if (nu::Engine::Get().GetInput().GetKeyDown(SDL_SCANCODE_X)) {
+        nu::Engine::Get().GetTime().SetTimeScale(0.5f);
+    }
+    else {
+        nu::Engine::Get().GetTime().SetTimeScale(1.0f);
     }
     
     nu::Particle particle;
@@ -54,19 +76,20 @@ void Player::Update(float dt) {
     particle.velocity = { nu::RandomFloat(-200.0f, 200.0f), nu::RandomFloat(-200.0f, 200.0f) };
 
 
-    SetVelocity(GetVelocity() + (force * dt)); 
+    
     Actor::Update(dt);
 
     
 }
 
+
 void Player::Draw(const nu::Renderer& renderer) const {
 	Actor::Draw(renderer);
 }
 
-//void Player::OnCollision(Actor* other) {
-//    if (other->GetTag() == "Enemy") {
-//        SetDestroyed();
-//        other->SetDestroyed();
-//    }
-//}
+/*void Player::OnCollision(Actor* other) {
+   if (other->GetTag() == "Enemy") {
+       SetDestroyed();
+       other->SetDestroyed();
+   }
+}*/

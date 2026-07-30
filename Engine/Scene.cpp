@@ -9,6 +9,14 @@ namespace nu {
 		m_pendingActors.push_back(actor);
 	}
 
+	void Scene::RemoveAllActors() {
+		for (auto actor : m_actors) {
+			delete actor;
+		}
+
+		m_actors.clear();
+	}
+
 	void Scene::Update(float dt) {
 		for (auto actor : m_actors) {
 			actor->Update(dt);

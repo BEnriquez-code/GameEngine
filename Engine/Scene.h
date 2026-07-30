@@ -9,6 +9,7 @@ namespace nu{
 	public:
 		void AddActor(Actor* actor);
 		std::vector<Actor*> GetActors() { return m_actors; };
+		void RemoveAllActors();
 
 		void Update(float dt);
 		void Draw(const class Renderer& renderer);

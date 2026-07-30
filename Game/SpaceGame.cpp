@@ -13,6 +13,29 @@ bool SpaceGame::Initialize() {
 	Game::Initialize();
 	m_scene = new Scene();
 
+	m_titleFont = new Font();
+	m_titleFont->Load("Fonts/Arcade.ttf", 64);
+
+	m_titleText = new Text(m_titleFont);
+
+	m_gameFont = new Font();
+	m_gameFont->Load("Fonts/Arcade.ttf", 32);
+
+	m_scoreText = new Text(m_gameFont);
+	m_livesText = new Text(m_gameFont);
+
+	m_gameOverFont = new Font();
+	m_gameOverFont->Load("Fonts/Arcade.ttf", 64);
+
+	m_gameOverText = new Text(m_gameOverFont);
+
+	m_playFont = new Font();
+	m_playFont->Load("Fonts/Arcade.ttf", 32);
+
+	m_playText = new Text(m_gameOverFont);
+	m_playText->Create(Engine::Get().GetRenderer(), "Press SPACE to play", Color{ 1.0f, 1.0f, 1.0f });
+
+
 	return true;
 }
 
@@ -27,47 +50,26 @@ void SpaceGame::Update(float dt, const std::vector<nu::Vector2>& mousePoints) {
 		case GameState::StartGame:
 			m_score = 0;
 			m_lives = 3;
+			m_spawnTime = 5.0f;
 			m_gameState = GameState::StartLevel;
 			break;
 		case GameState::StartLevel:
-			
-
-		{
-			PlayerDesc playerDesc;
-			playerDesc.name = "Player";
-			playerDesc.model = assets::playerModel;
-			playerDesc.transform = Transform{ Vector2 { 640.0f, 512.0f }, 0.0f, 15.0f };
-			playerDesc.velocity = Vector2{ 0.0f, 0.0f };
-			playerDesc.damping = 2.0f;
-			playerDesc.speed = 250.0f;
-
-
-			Player* player = new Player(playerDesc);
-			m_scene->AddActor(player);
-			
-		}
-
-		{
-			for (int i = 0; i < 20; i++) {
-				EnemyDesc enemyDesc;
-				enemyDesc.name = "Enemy";
-				enemyDesc.tag = "Enemy";
-				enemyDesc.model = assets::enemyModel;
-				enemyDesc.transform = Transform{ Vector2{RandomFloat((float)Engine::Get().GetRenderer().GetWidth()), RandomFloat((float)Engine::Get().GetRenderer().GetHeight())}, 90.0f, 10.0f };
-				enemyDesc.damping = 3.0f;
-				enemyDesc.speed = RandomFloat(1000.0f, 1500.0f);
-
-				Enemy* enemy = new Enemy(enemyDesc);
-				m_scene->AddActor(enemy);
-				
-			}
-		}
-
-
+			SpawnPlayer();
 			m_gameState = GameState::Game;
 
 			break;
 		case GameState::Game:
+			m_spawnTimer -= dt;
+			if (m_spawnTimer <= 0.0f) {
+				m_spawnTimer = m_spawnTime;
+				SpawnEnemy();
+			}
+
+			/*if (m_scene->GetActorByName<Player>("Player") == nullptr) {
+				OnPlayerDead();
+			}*/
+
+
 			CheckLineCollisions(mousePoints);
 			break;
 		case GameState::GameOver:
@@ -84,8 +86,35 @@ void SpaceGame::Update(float dt)
 {
 }
 
-void SpaceGame::Draw(const class Renderer& renderer) {
+void SpaceGame::Draw(Renderer& renderer) {
 	m_scene->Draw(renderer);
+
+	switch (m_gameState) {
+
+	case SpaceGame::GameState::Title:
+		m_titleText->Create(Engine::Get().GetRenderer(), "Game Engine", Color{ 1.0f, 1.0f, 1.0f });
+		m_titleText->Draw(renderer, 400, 400);
+		break;
+	case SpaceGame::GameState::StartGame:
+		break;
+	case SpaceGame::GameState::StartLevel:
+		break;
+	case SpaceGame::GameState::Game:
+		m_scoreText->Create(renderer, "Score: " + std::to_string(m_score), { 1.0f, 1.0f, 1.0f });
+		m_scoreText->Draw(renderer, 30, 30);
+
+		m_livesText->Create(renderer, "Lives: " + std::to_string(m_score), { 1.0f, 1.0f, 1.0f });
+		m_livesText->Draw(renderer, renderer.GetWidth() - 160, 30);
+		break;
+	case SpaceGame::GameState::GameOver:
+		m_gameOverText->Create(Engine::Get().GetRenderer(), "Game Over", Color{ 1.0f, 1.0f, 1.0f });
+		m_gameOverText->Draw(renderer, 400, 400);
+
+		m_playText->Draw(renderer, 400, 450);
+		break;
+	default:
+		break;
+	}
 }
 
 float SpaceGame::PointToLineSegDistance(const nu::Vector2& A, const nu::Vector2& B, const nu::Vector2& C) {
@@ -131,6 +160,39 @@ void SpaceGame::CheckLineCollisions(const std::vector<Vector2>& mousePoints) {
 			}
 		}
 	}
+}
+
+//void SpaceGame::OnPlayerDead() {
+//	m_lives--;
+//	m_gameState = (m_lives == 0) ? GameState::GameOver : GameState::StartLevel;
+//}
+
+void SpaceGame::SpawnPlayer() {
+	PlayerDesc playerDesc;
+	playerDesc.name = "Player";
+	playerDesc.model = assets::playerModel;
+	playerDesc.transform = Transform{ Vector2 { 640.0f, 512.0f }, 0.0f, 15.0f };
+	playerDesc.velocity = Vector2{ 0.0f, 0.0f };
+	playerDesc.damping = 2.0f;
+	playerDesc.speed = 250.0f;
+
+
+	Player* player = new Player(playerDesc);
+	m_scene->AddActor(player);
+}
+
+void SpaceGame::SpawnEnemy() {
+	EnemyDesc enemyDesc;
+	enemyDesc.name = "Enemy";
+	enemyDesc.tag = "Enemy";
+	enemyDesc.model = assets::enemyModel;
+	enemyDesc.transform = Transform{ Vector2{RandomFloat((float)Engine::Get().GetRenderer().GetWidth()), RandomFloat((float)Engine::Get().GetRenderer().GetHeight())}, 90.0f, 10.0f };
+	enemyDesc.damping = 300.0f;
+	enemyDesc.speed = RandomFloat(1000.0f, 1500.0f);
+
+	Enemy* enemy = new Enemy(enemyDesc);
+	m_scene->AddActor(enemy);
+	
 }
 
 void SpaceGame::Shutdown() {
