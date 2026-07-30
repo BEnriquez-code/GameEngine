@@ -18,8 +18,13 @@ namespace nu {
     }
 
     float Actor::GetRadius() const {
+        float modelRadius = m_model.GetRadius();
 
-        return m_model.GetRadius() * m_transform.scale * 0.9f;
+        if (modelRadius <= 0.0f) {
+            return m_transform.scale;
+        }
+
+        return modelRadius * m_transform.scale * 0.3f;
     }
 
 }

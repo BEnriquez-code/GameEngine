@@ -13,8 +13,6 @@ void Bullet::Update(float dt) {
 		SetDestroyed();
 	}
 
-	std::cout << m_lifespan << std::endl;
-
 	SetVelocity(velocity);
 
 	Actor::Update(dt);

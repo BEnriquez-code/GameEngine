@@ -87,9 +87,9 @@ void Player::Draw(const nu::Renderer& renderer) const {
 	Actor::Draw(renderer);
 }
 
-/*void Player::OnCollision(Actor* other) {
+void Player::OnCollision(Actor* other) {
    if (other->GetTag() == "Enemy") {
        SetDestroyed();
        other->SetDestroyed();
    }
-}*/
+}

@@ -21,7 +21,7 @@ public:
     void Update(float dt) override;
     void Draw(const class nu::Renderer& render) const override;
 
-    //void OnCollision(Actor* other);
+    void OnCollision(Actor* other);
 
 private:
 	int m_ammo = 0;

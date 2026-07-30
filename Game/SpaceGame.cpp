@@ -12,6 +12,7 @@ using namespace nu;
 bool SpaceGame::Initialize() {
 	Game::Initialize();
 	m_scene = new Scene();
+	m_scene->SetGame(this);
 
 	m_titleFont = new Font();
 	m_titleFont->Load("Fonts/Arcade.ttf", 64);
@@ -49,11 +50,12 @@ void SpaceGame::Update(float dt, const std::vector<nu::Vector2>& mousePoints) {
 			break;
 		case GameState::StartGame:
 			m_score = 0;
-			m_lives = 3;
+			m_lives = 5;
 			m_spawnTime = 5.0f;
 			m_gameState = GameState::StartLevel;
 			break;
 		case GameState::StartLevel:
+			m_scene->RemoveAllActors();
 			SpawnPlayer();
 			m_gameState = GameState::Game;
 
@@ -65,9 +67,9 @@ void SpaceGame::Update(float dt, const std::vector<nu::Vector2>& mousePoints) {
 				SpawnEnemy();
 			}
 
-			/*if (m_scene->GetActorByName<Player>("Player") == nullptr) {
+			if (m_scene->GetActorByName<Player>("Player") == nullptr) {
 				OnPlayerDead();
-			}*/
+			}
 
 
 			CheckLineCollisions(mousePoints);
@@ -103,8 +105,8 @@ void SpaceGame::Draw(Renderer& renderer) {
 		m_scoreText->Create(renderer, "Score: " + std::to_string(m_score), { 1.0f, 1.0f, 1.0f });
 		m_scoreText->Draw(renderer, 30, 30);
 
-		m_livesText->Create(renderer, "Lives: " + std::to_string(m_score), { 1.0f, 1.0f, 1.0f });
-		m_livesText->Draw(renderer, renderer.GetWidth() - 160, 30);
+		m_livesText->Create(renderer, "Lives: " + std::to_string(m_lives), { 1.0f, 1.0f, 1.0f });
+		m_livesText->Draw(renderer, 1790, 30);
 		break;
 	case SpaceGame::GameState::GameOver:
 		m_gameOverText->Create(Engine::Get().GetRenderer(), "Game Over", Color{ 1.0f, 1.0f, 1.0f });
@@ -162,14 +164,15 @@ void SpaceGame::CheckLineCollisions(const std::vector<Vector2>& mousePoints) {
 	}
 }
 
-//void SpaceGame::OnPlayerDead() {
-//	m_lives--;
-//	m_gameState = (m_lives == 0) ? GameState::GameOver : GameState::StartLevel;
-//}
+void SpaceGame::OnPlayerDead() {
+	m_lives--;
+	m_gameState = (m_lives == 0) ? GameState::GameOver : GameState::StartLevel;
+}
 
 void SpaceGame::SpawnPlayer() {
 	PlayerDesc playerDesc;
 	playerDesc.name = "Player";
+	playerDesc.tag = "Player";
 	playerDesc.model = assets::playerModel;
 	playerDesc.transform = Transform{ Vector2 { 640.0f, 512.0f }, 0.0f, 15.0f };
 	playerDesc.velocity = Vector2{ 0.0f, 0.0f };

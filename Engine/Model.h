@@ -20,7 +20,12 @@ namespace nu {
 		}
 		const std::vector<Mesh>& GetMeshes() const { return m_meshes; }
 
-		float GetRadius() const { return m_radius; }
+		float GetRadius() const { 
+			if (m_radius <= 0.0f && !m_meshes.empty()) {
+				const_cast<Model*>(this)->CalculateRadius();
+			}
+			return m_radius; 
+		}
 		void CalculateRadius();
 	private:
 		float m_radius = 0.0f;

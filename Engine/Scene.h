@@ -17,11 +17,16 @@ namespace nu{
 		template<typename T>
 		T* GetActorByName(const std::string& name);
 
+		void SetGame(class Game* game) { m_game = game; };
+		class Game* GetGame() { return m_game; };
+
 	private:
 		void UpdateCollisions();
 
 		std::vector<Actor*> m_actors;
 		std::vector<Actor*>m_pendingActors;
+
+		class Game* m_game{ nullptr };
 	};
 
 	template<typename T>

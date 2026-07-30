@@ -10,7 +10,7 @@ namespace nu {
     struct ActorDesc {
         std::string name;
         std::string tag;
-        Transform transform;
+        Transform transform{0.0f, 0.0f};
         Vector2 velocity{ 0.0f, 0.0f };
         float damping{ 0.0f };
         float lifespan{ 0.0f };

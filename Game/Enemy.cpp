@@ -2,6 +2,7 @@
 #include "Player.h"
 #include "Renderer.h"
 #include "Engine.h"
+#include "SpaceGame.h" // Add this include to resolve SpaceGame
 
 #include <iostream>
 
@@ -19,13 +20,13 @@ void Enemy::Update(float dt) {
 		AddVelocity(forward * m_speed * dt);
 	}
 
-		float thrust = 0.0f;
+	float thrust = 0.0f;
 
-		float rotate = 0.0f;
+	float rotate = 0.0f;
 
-		nu::Vector2 forward{ 1, 0 }; // ->
-		nu::Vector2 velocity = forward.Rotate(m_transform.rotation * nu::math::DegToRad) * thrust;
-		AddVelocity(velocity * dt);
+	nu::Vector2 forward{ 1, 0 }; // ->
+	nu::Vector2 velocity = forward.Rotate(m_transform.rotation * nu::math::DegToRad) * thrust;
+	AddVelocity(velocity * dt);
 
 	Actor::Update(dt);
 }
@@ -34,6 +35,8 @@ void Enemy::OnCollision(Actor* other) {
 	if (other->GetTag() == "PlayerBullet") {
 		SetDestroyed();
 		other->SetDestroyed();
+
+		((SpaceGame*)m_scene->GetGame())->AddPoints(100);
 
 		for (int i = 0; i < 100; i++)
 		{
@@ -47,6 +50,7 @@ void Enemy::OnCollision(Actor* other) {
 		}
 	}
 	else if (other->GetTag() == "Player") {
+		SetDestroyed();
 		other->SetDestroyed();
 	}
 }
