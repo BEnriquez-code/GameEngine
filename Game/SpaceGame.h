@@ -33,6 +33,7 @@ public:
 
 	void OnPlayerDead();
 	void AddPoints(int points) { m_score += points; };
+	void AddKillStreakPoints(int basePoints);
 
 private:
 	
@@ -47,6 +48,10 @@ private:
 	float m_spawnTimer = 0.0f;
 	float m_spawnTime = 5.0f;
 	int m_spawnCount = 5;
+
+	int m_killstreak = 0;
+	float m_killstreakTimer = 0.0f;
+	const float m_killstreakWindow = 2.5f;
 
 	nu::Font* m_titleFont{ nullptr };
 	nu::Text* m_titleText{ nullptr };

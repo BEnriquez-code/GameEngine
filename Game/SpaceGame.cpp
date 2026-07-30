@@ -61,6 +61,13 @@ void SpaceGame::Update(float dt, const std::vector<nu::Vector2>& mousePoints) {
 
 			break;
 		case GameState::Game:
+			if (m_killstreak > 0) {
+				m_killstreakTimer += dt;
+				if (m_killstreakTimer > m_killstreakWindow) {
+					m_killstreak = 0;
+				} 
+			}
+
 			m_spawnTimer -= dt;
 			if (m_spawnTimer <= 0.0f) {
 				m_spawnTimer = m_spawnTime;
@@ -144,19 +151,15 @@ void SpaceGame::CheckLineCollisions(const std::vector<Vector2>& mousePoints) {
 		auto actors = m_scene->GetActors();
 		for (auto actor : actors) {
 			// Check collision for both Enemies and Bullets
-			if (actor->GetTag() == "Enemy" || actor->GetTag() == "Bullet" || actor->GetTag() == "EnemyBullet") {
+			if (actor->GetTag() == "Enemy" || actor->GetTag() == "PlayerBullet") {
 				Vector2 pos = actor->GetTransform().position;
 				float radius = actor->GetRadius(); // Adjust based on actor's radius/size getter
 
 				if (PointToLineSegDistance(p1, p2, pos) <= radius) {
 					// Collision action:
-					if (actor->GetTag() == "Enemy") {
+					if (actor->GetTag() == "Enemy" || actor->GetTag() == "PlayerBullet") {
 						Vector2 pushDir = (pos - (p1 + p2) * 0.5f).Normalized();
 						actor->SetVelocity(pushDir * 300.0f);
-					}
-					else if (actor->GetTag() == "Bullet" || actor->GetTag() == "EnemyBullet") {
-						// Block and destroy incoming bullets
-						actor->SetDestroyed();
 					}
 				}
 			}
@@ -167,6 +170,23 @@ void SpaceGame::CheckLineCollisions(const std::vector<Vector2>& mousePoints) {
 void SpaceGame::OnPlayerDead() {
 	m_lives--;
 	m_gameState = (m_lives == 0) ? GameState::GameOver : GameState::StartLevel;
+}
+
+void SpaceGame::AddKillStreakPoints(int basePoints) {
+	if (m_killstreakTimer <= m_killstreakWindow) {
+		m_killstreak++;
+	}
+	else {
+		m_killstreak = 1;
+	}
+
+	m_killstreakTimer = 0.0f;
+
+	float multiplier = std::pow(1.5f, static_cast<float>(m_killstreak - 1));
+	int pointsEarned = basePoints * multiplier;
+
+	m_score += pointsEarned;
+
 }
 
 void SpaceGame::SpawnPlayer() {

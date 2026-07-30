@@ -36,7 +36,9 @@ void Enemy::OnCollision(Actor* other) {
 		SetDestroyed();
 		other->SetDestroyed();
 
-		((SpaceGame*)m_scene->GetGame())->AddPoints(100);
+		int enemyBaseValue = 100;		
+		((SpaceGame*)m_scene->GetGame())->AddKillStreakPoints(enemyBaseValue);
+
 
 		for (int i = 0; i < 100; i++)
 		{

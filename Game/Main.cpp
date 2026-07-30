@@ -27,16 +27,21 @@ int main() {
     game.Initialize();
 
     Scene scene;
-
-    SetWorkingDirectory("Fonts");
     
     //SetWorkingDirectory("Assets");
+    SetWorkingDirectory("Audio");
     
     Engine::Get().GetAudio().AddSound("test", "test.wav");
     Engine::Get().GetAudio().AddSound("thrust", "thrust.wav");
     Engine::Get().GetAudio().AddSound("mario", "mario.mp3");
     Engine::Get().GetAudio().AddSound("hee-hee", "hee-hee.mp3");
     Engine::Get().GetAudio().AddSound("bass", "bass.wav");
+    Engine::Get().GetAudio().AddSound("background", "background_music.ogg");
+
+			
+    Engine::Get().GetAudio().PlaySound("background");
+
+    SetWorkingDirectory("Fonts");
     
 
     vector<Vector2> mouseLinePoints;   
