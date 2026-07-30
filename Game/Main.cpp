@@ -79,7 +79,7 @@ int main() {
             
 		}
 
-        if (Engine::Get().GetInput().GetButtonPressed(Input::MouseButton::Right)) {
+        if (Engine::Get().GetInput().GetButtonDown(Input::MouseButton::Right)) {
             if (!mouseLinePoints.empty())mouseLinePoints.pop_back();
 		}
 

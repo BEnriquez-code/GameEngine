@@ -36,6 +36,6 @@ namespace nu {
 
 	inline float RandomFloat(float min, float max) {
 		//min + (0 <-> 1) * (max - min)
-		return min + RandomFloat() * (max + min) + min;
+		return min + RandomFloat() * (max - min) + min;
 	}
 }
