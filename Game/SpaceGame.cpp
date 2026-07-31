@@ -211,7 +211,7 @@ void SpaceGame::SpawnEnemy() {
 	enemyDesc.model = assets::enemyModel;
 	enemyDesc.transform = Transform{ Vector2{RandomFloat((float)Engine::Get().GetRenderer().GetWidth()), RandomFloat((float)Engine::Get().GetRenderer().GetHeight())}, 90.0f, 10.0f };
 	enemyDesc.damping = 300.0f;
-	enemyDesc.speed = RandomFloat(1000.0f, 1500.0f);
+	enemyDesc.speed = RandomFloat(100.0f, 150.0f);
 
 	Enemy* enemy = new Enemy(enemyDesc);
 	m_scene->AddActor(enemy);

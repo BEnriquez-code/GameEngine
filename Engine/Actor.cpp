@@ -24,7 +24,7 @@ namespace nu {
             return m_transform.scale;
         }
 
-        return modelRadius * m_transform.scale * 0.3f;
+        return modelRadius * m_transform.scale * 0.25f;
     }
 
 }
